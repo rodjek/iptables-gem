@@ -86,5 +86,33 @@ describe IPTables::Rule do
         should == "-A INPUT -p tcp --tcp-flags ! SYN,RST,ACK,FIN SYN -j ACCEPT"
       }
     end
+
+    context "when creating a rule with syn set" do
+      subject do
+        rule = IPTables::Rule.new
+        rule.chain = :input
+        rule.target = :accept
+        rule.protocol = :tcp
+        rule.syn = true
+        rule
+      end
+
+      its(:syn) { should == true }
+      its(:to_iptables) { should == "-A INPUT -p tcp --syn -j ACCEPT" }
+    end
+
+    context "when creating a rule with syn inverted" do
+      subject do
+        rule = IPTables::Rule.new
+        rule.chain = :input
+        rule.target = :accept
+        rule.protocol = :tcp
+        rule.syn = :not
+        rule
+      end
+
+      its(:syn) { should == :not }
+      its(:to_iptables) { should == "-A INPUT -p tcp ! --syn -j ACCEPT" }
+    end
   end
 end

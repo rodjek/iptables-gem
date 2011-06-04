@@ -48,6 +48,16 @@ module IPTables
         @mod_opts[:protocol] << tcp_flags[:mask].map { |r| r.to_s.upcase }.join(',')
         @mod_opts[:protocol] << tcp_flags[:comp].map { |r| r.to_s.upcase }.join(',')
       end
+
+      def syn=(value)
+        unless [true, false, :not].include? value
+          raise "Valid values for TCP syn are true, false and :not"
+        end
+
+        @syn = value
+        @mod_opts[:protocol] << "!" << "--syn" if value == :not
+        @mod_opts[:protocol] << "--syn" if value == true
+      end
     end
   end
 end
