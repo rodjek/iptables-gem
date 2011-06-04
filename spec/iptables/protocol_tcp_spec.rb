@@ -18,10 +18,6 @@ describe IPTables::Rule do
     it { should respond_to(:tcp_flags=).with(1).argument }
     it { should respond_to(:syn).with(0).arguments }
     it { should respond_to(:syn=).with(1).arguments }
-    it { should respond_to(:tcp_option).with(0).arguments }
-    it { should respond_to(:tcp_option=).with(1).argument }
-    it { should respond_to(:mss).with(0).arguments }
-    it { should respond_to(:mss=).with(1).argument }
 
     context "when creating a rule with source_port" do
       subject do

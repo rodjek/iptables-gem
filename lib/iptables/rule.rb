@@ -11,6 +11,7 @@ module IPTables
     def protocol=(value)
       protocols = {
         :tcp => IPTables::Protocol::TCP,
+        :udp => IPTables::Protocol::UDP,
       }
 
       value = value.to_sym unless value.is_a? Symbol
