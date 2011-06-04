@@ -19,7 +19,7 @@ describe IPTables::Rule do
     it { should respond_to(:out_interface).with(0).arguments }
     it { should respond_to(:out_interface=).with(1).argument }
     it { should respond_to(:modules).with(0).arguments }
-    it { should respond_to(:modules=).with(1).argument }
+    it { should respond_to(:add_module).with(1).argument }
   end
 
   context "when generating a simple rule to allow inbound traffic from 192.168.0.1 to 192.168.0.2" do

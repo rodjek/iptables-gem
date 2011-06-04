@@ -1,11 +1,25 @@
 module IPTables
   class Rule
-    attr_accessor :chain, :source, :destination, :target, :in_interface, :out_interface, :modules
-    attr_reader :protocol
+    attr_accessor :chain, :source, :destination, :target, :in_interface, :out_interface
+    attr_reader :protocol, :modules
     attr_accessor :mod_opts
 
     def initialize
       @mod_opts = {}
+      @modules = []
+    end
+
+    def add_module(val)
+      modules = {
+        :state => IPTables::Match::State,
+      }
+
+      begin
+        self.extend(modules[val.to_sym])
+        @modules << val.to_sym
+      rescue
+        raise "Unknown module '#{val}'"
+      end
     end
 
     def protocol=(value)
@@ -52,6 +66,11 @@ module IPTables
         data << "-p" << @protocol
         @mod_opts[:protocol].each { |r| data << r }
       end
+
+      @modules.each { |mod|
+        data << '-m' << mod.to_s
+        @mod_opts[mod].each { |r| data << r }
+      }
 
       data << "-j" << @target.to_s.upcase
       data.join(' ')
